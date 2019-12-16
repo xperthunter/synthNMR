@@ -9,9 +9,9 @@ def peak_generator(points=100, limits=[0,10], grid_density=1000, mode="default",
     z = np.zeros((points, x.shape[1], x.shape[1]))
     if mode == "default":
         intv = limits[1] - limits[0]
-        means = intv*np.random.sample(points, 2) + limits[0]
+        means = intv*np.random.sample((points, 2)) + limits[0]
         variscale = intv*variance/100.
-        varis = variscale*np.random.sample(points, 2)
+        varis = variscale*np.random.sample((points, 2))
         for i, (cn, vn) in enumerate(zip(means, varis)):
             fac = ((x - cn[0])**2/(2*vn[0])) + ((y - cn[1])**2/(2*vn[1]))
             z[i,:,:] = np.exp(-fac)
@@ -49,10 +49,10 @@ def spectra_generator(x, y, z, centers, figsize=3, dpi=100, specfile="100.png", 
     fig1.savefig(resfile, bbox_inches='tight', pad_inches=0.0)
     fig1.canvas.draw()
     s, (width, height) = canvas1.print_to_buffer()
-    X1 = np.frombugger(s, np.uint8).reshape((height, width, 4))
+    X1 = np.frombuffer(s, np.uint8).reshape((height, width, 4))
     X1 = X1[:,:,1]
     plt.close()
-    return copyX, copyX1
+    return X, X1
 
 """plt.ioff()
 xx, yy, zz, pps = peak_generator(points=50,limits=[0.5,9.5], grid_density=500)
