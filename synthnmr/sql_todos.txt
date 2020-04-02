@@ -1,0 +1,38 @@
+* Start thinking about the schema for synthnmr
+
+# What tables, columns, indexes, foreign keys do we need?
+
+1. Data table (holds the raw matrices that the spectra are plotted from)
+	- the actual numpy arrays 
+2. ID system
+	- how do you give each experiment, data record, a unique id
+	- levels
+		* experiment that you ran, or rather group of spectra
+		* or individual per matrix?
+		* what is tracked, at what level, group/experiment, or is per spectrum?
+
+what is a group? versus experiment?
+
+spectrum_dataset script -- this calls the generator many times. We would want to
+know that all of those spectra are together in the same group. 
+
+all the parameters are separate columns in the database. 
+* parameters 
+	number of points
+	limits
+	mode
+
+what protein/structure we are trying to model
+
+Just make a simple db with 1 table 
+we ignore the group context
+each row is a unique spectrum
+number of points
+interval size
+and the mode
+of course the raw data
+	- store the numpy arrays as well as any png files that were created.
+
+
+make a simple table with integer primary key and the number of points. and make
+it in pure sql .sql file

@@ -1,24 +1,47 @@
+'''
+Peak generator and spectra generator library
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 
+### TO-DO:
+# 1. 
+
+'''
+Usage:
+	variance	User chooses percentage of the interval size for peak variances.
+
+'''
 def peak_generator(points=100, limits=[0,10], grid_density=1000, mode="default", variance=1.0):
-    x = np.linspace(limits[0], limits[1], grid_density)
+    '''
+	peak_generator ::: 
+	'''
+	x = np.linspace(limits[0], limits[1], grid_density)
     y = np.linspace(limits[0], limits[1], grid_density)
     x, y = np.meshgrid(x, y)
     z = np.zeros((points, x.shape[1], x.shape[1]))
-    if mode == "default":
-        intv = limits[1] - limits[0]
+    intv = limits[1] - limits[0]
+	variscale = intv*variance/100.
+
+	if mode == "default":
         means = intv*np.random.sample((points, 2)) + limits[0]
-        variscale = intv*variance/100.
         varis = variscale*np.random.sample((points, 2))
         for i, (cn, vn) in enumerate(zip(means, varis)):
             fac = ((x - cn[0])**2/(2*vn[0])) + ((y - cn[1])**2/(2*vn[1]))
             z[i,:,:] = np.exp(-fac)
         z = np.sum(z,axis=0)
-    else:
-        pass
-    return x, y, z, means, varis
+
+		return x, y, z, means, varis
+
+    elif mode == "uniform":
+		for i, cn in enumerate(means):
+			fac = ((x - cn[0])**2/(2*variscale) + ((y - cn[1])**2/(2*variscale))
+			z[i,:,:] = np.exp(-fac)
+		z = np.sum(z,axis=0)
+		
+		return x, y, z, means, varis
+
 
 def spectra_generator(x, y, z, centers, figsize=3, dpi=100, specfile="100.png", resfile="100-r.png"):
     fig = plt.figure(figsize=(figsize,figsize), dpi=dpi,frameon=False)
