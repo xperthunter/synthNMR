@@ -15,7 +15,7 @@ parser.add_argument('--imgsize', required=True, type=int,
 
 arg = parser.parse_args()
 print(arg)
-
+print(arg.images)
 
 #overlapped_spectra = np.zeros((10,450,450),dtype=np.uint8)
 #resolved_spectra = np.zeros((10,450,450),dtype=np.uint8)
