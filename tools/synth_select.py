@@ -21,12 +21,13 @@ c = conn.cursor()
 
 c.execute('SELECT * from {tn}'.format(tn=arg.t))
 rows = c.fetchone()
-print(rows[0])
+print(rows[2])
 
 for i, r in enumerate(rows):
 	print(i)
 
 img = np.frombuffer(rows[2], dtype = np.uint8).reshape((300,300))
+print(img)
 plt.imshow(img, cmap="gray", aspect='auto')
 plt.axis('off')
 plt.show()
