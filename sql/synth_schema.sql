@@ -4,3 +4,7 @@ CREATE TABLE data (
 	pixel_plot BLOB,
 	pixel_peak BLOB
 );
+
+imgspecs
+	figsize
+	dpi
