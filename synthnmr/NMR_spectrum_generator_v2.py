@@ -20,11 +20,11 @@ def peak_generator(
 	+ points		Number of peaks you want in the spectrum.
 	+ limits		Numeric range of x/y limits. Window is a always square.
 	+ grid_density	Number of points in each dimension.
-	+ mode			mode for placing peaks in spectrum. Current implemented modes:
+	+ mode			mode for placing peaks in spectrum. Current developed modes:
 						+ default	Peaks randomly placed, random variances
 						+ uniform	Peaks randomly placed, same variance
-	+ variance		Variance of gaussian peaks in spectrum. Variance is a percentage of
-						the interval size.  
+	+ variance		Variance of gaussian peaks in spectrum. Variance is a 
+						percentage of the interval size.  
 						
 	Returns
 	-------
