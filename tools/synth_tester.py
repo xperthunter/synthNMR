@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 
-
 parser = argparse.ArgumentParser(description='Make a synthetic spectra database.')
 parser.add_argument('-d', required=True, type=str,
     metavar='<str>', help='Path to SQLite Database (%(type)s)')
