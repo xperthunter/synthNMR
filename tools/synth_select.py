@@ -21,16 +21,22 @@ c = conn.cursor()
 
 c.execute('SELECT * from {tn}'.format(tn=arg.t))
 rows = c.fetchone()
-print(rows[2])
+#print(rows[2])
 
 for i, r in enumerate(rows):
 	print(i)
 
-img = np.frombuffer(rows[2], dtype = np.uint8).reshape((300,300))
+img = np.frombuffer(rows[4], dtype = np.uint8).reshape((300,300))
 print(img)
 plt.imshow(img, cmap="gray", aspect='auto')
 plt.axis('off')
 plt.show()
+
+
+c.execute(f"select count(*) from {arg.t}")
+results = c.fetchone()
+print(results)
+
 
 conn.commit()
 conn.close()

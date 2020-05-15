@@ -14,13 +14,18 @@ parser.add_argument('-t', required=True, type=str,
     metavar='<str>', help='Name of table to insert into (%(type)s)')
 parser.add_argument('-p', required=True, type=int,
 	metavar='value', help='Number of points for the peak generator')
-    
+parser.add_argument('-s', required=True, type=str,
+	metavar='schema', help='Path to schema')    
 arg = parser.parse_args()
 
 conn = sqlite3.connect(arg.d)
 c = conn.cursor()
+c.execute(f"DROP TABLE {arg.t}")
 
-sql = 'INSERT OR IGNORE INTO {tn} (np_array, pixel_plot, pixel_peak) VALUES(?, ?, ?)'.format(tn = arg.t)
+with open(arg.s) as fp:
+	c.execute(fp.read())
+
+sql = 'INSERT OR IGNORE INTO {tn} (np_plot, plot_pixels, centers_pixels) VALUES(?, ?, ?)'.format(tn = arg.t)
 xyz, mm, vv = gen.peak_generator(arg.p, mode="uniform")
 img, peaks = gen.spectra_generator(xyz, mm)
 
