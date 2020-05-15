@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import sys
-import NMR_spectrum_generator
+import NMR_spectrum_generator_v2
 import _pickle as cpickle
 
 parser = argparse.ArgumentParser(description='Make a synthetic spectra database.')

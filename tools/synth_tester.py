@@ -13,6 +13,8 @@ parser.add_argument('-d', required=True, type=str,
     metavar='<str>', help='Path to SQLite Database (%(type)s)')
 parser.add_argument('-t', required=True, type=str,
     metavar='<str>', help='Name of table to insert into (%(type)s)')
+parser.add_argument('-p', required=True, type=int,
+	metavar='value', help='Number of points for the peak generator')
     
 arg = parser.parse_args()
 
@@ -20,7 +22,7 @@ conn = sqlite3.connect(arg.d)
 c = conn.cursor()
 
 sql = 'INSERT OR IGNORE INTO {tn} (np_array, pixel_plot, pixel_peak) VALUES(?, ?, ?)'.format(tn = arg.t)
-xyz, mm, vv = gen.peak_generator(points=10, mode="uniform")
+xyz, mm, vv = gen.peak_generator(arg.p, mode="uniform")
 img, peaks = gen.spectra_generator(xyz, mm)
 
 fig = plt.figure()
