@@ -25,6 +25,29 @@ synthNMR
 		- only worry about synthetic nmr data set construction?
 		- also would like to make time-domain data as well 
 * **tools**
-	- auxillary tools for synthNMR
+	- auxillary tools for synthNMR  
 	- using synthnmr functions
+
+
+# SynthNMR Command Line Interface   
+* SynthNMR can be used in a CLI.  
+	- CLI organized in `specdb/specdb.py`.  
+	- Commands:  
+		- gen => generate images 
+		- add => add generated images to a db
+		- query => make a query against db
+		- config => generate a form to generate images
+		- img => make images from a SQL query against db
+		- status => number of records in db
+		- db => make a connection to a given db file
+
+# Library module for SynthNMR
+* libsynthnmr
+	- connect to a db
+	- generate images
+	- query
+	- config
+	- img
+	- status
 	
+	gen(kwargs?) send in a dictionary of parameters?
