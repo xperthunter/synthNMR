@@ -20,12 +20,17 @@ arg = parser.parse_args()
 
 conn = sqlite3.connect(arg.d)
 c = conn.cursor()
-c.execute(f"DROP TABLE {arg.t}")
+try:
+	c.execute(f"DROP TABLE {arg.t}")
+	with open(arg.s) as fp:
+		c.execute(fp.read())
+except:
+	with open(arg.s) as fp:
+		c.execute(fp.read())
 
-with open(arg.s) as fp:
-	c.execute(fp.read())
-
-sql = 'INSERT OR IGNORE INTO {tn} (np_plot, plot_pixels, centers_pixels) VALUES(?, ?, ?)'.format(tn = arg.t)
+sql = ''.join((f'INSERT OR IGNORE INTO {arg.t} (points, np_plot, ',
+			   'plot_pixels, centers_pixels) VALUES(?, ?, ?, ?)'))
+print(sql)
 xyz, mm, vv = gen.peak_generator(arg.p, mode="uniform")
 img, peaks = gen.spectra_generator(xyz, mm)
 
@@ -35,7 +40,7 @@ ax.contourf(xyz[:,:,0],xyz[:,:,1],xyz[:,:,2], 100, cmap="gray_r")
 plt.axis('off')
 plt.show()
 
-inserter = [xyz.tobytes(), img.tobytes(), peaks.tobytes(),]
+inserter = [arg.p, xyz.tobytes(), img.tobytes(), peaks.tobytes(),]
 
 c.execute(sql, inserter)
 

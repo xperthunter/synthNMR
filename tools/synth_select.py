@@ -27,7 +27,11 @@ for i, r in enumerate(rows):
 	print(i)
 
 img = np.frombuffer(rows[4], dtype = np.uint8).reshape((300,300))
-print(img)
+xyz = np.frombuffer(rows[2], dtype = np.float64).reshape((1000,1000,3))
+print(xyz[0,0,0], xyz[-1,-1,0])
+print(xyz[0,0,1], xyz[-1,-1,1])
+print(xyz[0,0,2], xyz[-1,-1,2])
+#print(img)
 plt.imshow(img, cmap="gray", aspect='auto')
 plt.axis('off')
 plt.show()
@@ -36,7 +40,7 @@ plt.show()
 c.execute(f"select count(*) from {arg.t}")
 results = c.fetchone()
 print(results)
-
+print(rows[1])
 
 conn.commit()
 conn.close()
