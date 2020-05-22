@@ -10,7 +10,7 @@ CREATE TABLE data (
 	user_id INTEGER,
 	date TEXT,
 	FOREIGN KEY ([user_id]) REFERENCES "user_info" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	FOREIGN KEY ([img_specs_id]) REFERENCES "img_specs" ([ec_id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	FOREIGN KEY ([img_specs_id]) REFERENCES "img_specs" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
 	FOREIGN KEY ([plot_specs_id]) REFERENCES "plot_specs" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 	
