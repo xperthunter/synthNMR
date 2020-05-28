@@ -31,6 +31,7 @@ try:
 	c.execute(f"DROP TABLE data")
 	c.execute(f"DROP TABLE img_specs")
 	c.execute(f"DROP TABLE plot_specs")
+	c.execute(f"DROP TABLE user_info")
 	with open(arg.s) as fp:
 		c.executescript(fp.read())
 except:
@@ -38,7 +39,7 @@ except:
 		c.executescript(fp.read())
 
 sql = ''.join((f'INSERT OR IGNORE INTO data (points, np_plot, center_coords, ',
-			   'plot_pixels, centers_pixels, todays_date, img_specs_id, plot_specs_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'))
+			   'plot_pixels, centers_pixels, todays_date, img_specs_id, plot_specs_id, user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)'))
 print(sql)
 xyz, mm, vv = gen.peak_generator(arg.p, mode="uniform")
 img, peaks = gen.spectra_generator(xyz, mm)
@@ -49,30 +50,47 @@ ax.contourf(xyz[:,:,0],xyz[:,:,1],xyz[:,:,2], 100, cmap="gray_r")
 plt.axis('off')
 plt.show()
 
+#img_specs table
 def img_specs_inserter(cursor):
 	img_sql = ((f'INSERT INTO img_specs (figsize, dpi) VALUES (?, ?)')) ###function
 	inserter_img = ['3in', '100']
 	cursor.execute(img_sql, inserter_img)
-#	return conn
-
+#connecting to the table data; foreign key = img_specs_id
 def img_specs_query(cursor):
-	img_spec_q = cursor.execute(f"SELECT id FROM img_specs WHERE figsize = '3in' AND dpi = '100'") ###function
+	img_spec_q = cursor.execute(f"SELECT id FROM img_specs WHERE figsize = '3in' AND dpi = '100'")
 	img_specs_id = cursor.fetchone()[0]
 	return img_specs_id
 #print(img_specs_id)
 
-plot_sql = ''.join((f'INSERT INTO plot_specs (density, lower_limit, upper_limit, mode, ',
-				'variance) VALUES (?, ?, ?, ?, ?)'))
-inserter_plot = [1000.0, 0.0, 10.0, 'default', 1.0]
-c.execute(plot_sql, inserter_plot)
+#plot_specs table
+def plot_specs_inserter(cursor):
+	plot_sql = ''.join((f'INSERT INTO plot_specs (density, lower_limit, upper_limit, mode, ',
+					'variance) VALUES (?, ?, ?, ?, ?)'))
+	inserter_plot = [1000.0, 0.0, 10.0, 'default', 1.0]
+	cursor.execute(plot_sql, inserter_plot)
 
-plot_specs_q = c.execute(f"SELECT id FROM plot_specs WHERE density = 1000.0 AND lower_limit = 0.0 AND upper_limit = 10.0 AND mode = 'default' AND variance = 1.0 ")
-plot_specs_id = c.fetchone()[0]
+def plot_specs_query(cursor):
+	plot_specs_q = cursor.execute(f"SELECT id FROM plot_specs WHERE density = 1000.0 AND lower_limit = 0.0 AND upper_limit = 10.0 AND mode = 'default' AND variance = 1.0 ")
+	plot_specs_id = cursor.fetchone()[0]
+	return plot_specs_id
+
+#user_info table
+def user_info_inserter(cursor):
+	user_sql = ((f'INSERT INTO user_info (first_name, last_name, email) VALUES (?, ?, ?)'))
+	inserter_user = ['Stephani', 'Keefe', 'skeefe@ucdavis.edu']
+	cursor.execute(user_sql, inserter_user)
+
+def user_info_query(cursor):
+	user_specs_q = cursor.execute(f"SELECT id FROM user_info WHERE first_name = 'Stephani' AND last_name = 'Keefe' AND email = 'skeefe@ucdavis.edu'")
+	user_id = cursor.fetchone()[0]
+	return user_id
+
 
 img_specs_inserter(c)
+plot_specs_inserter(c)
+user_info_inserter(c)
 
-
-inserter = [arg.p, xyz.tobytes(), mm.tobytes(), img.tobytes(), peaks.tobytes(), '01/01/01', img_specs_query(c), plot_specs_id]
+inserter = [arg.p, xyz.tobytes(), mm.tobytes(), img.tobytes(), peaks.tobytes(), '01/01/01', img_specs_query(c), plot_specs_query(c), user_info_query(c)]
 
 c.execute(sql, inserter)
 #executing the inserter to insert information into the data,

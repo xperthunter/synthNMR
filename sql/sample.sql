@@ -8,8 +8,10 @@ CREATE TABLE data (
 	todays_date TEXT,
 	img_specs_id INTEGER,
 	plot_specs_id INTEGER,
+	user_id INTEGER,
 	FOREIGN KEY ([img_specs_id]) REFERENCES "img_specs" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY ([plot_specs_id]) REFERENCES "plot_specs" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    FOREIGN KEY ([plot_specs_id]) REFERENCES "plot_specs" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY ([user_id]) REFERENCES "user_info" ([id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE img_specs (
@@ -27,4 +29,10 @@ CREATE TABLE plot_specs (
 	variance FLOAT
 );
 
+CREATE TABLE user_info (
+	id INTEGER PRIMARY KEY NOT NULL,
+	first_name TEXT,
+	last_name TEXT,
+	email TEXT
+);
 
