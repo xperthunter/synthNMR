@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+
+import synthnmr as sn
+import argparse
+import os
+import sys
+
+###############################################################################
+# Command Line Stuff
+###############################################################################
+
+# top-level parser
+
+examples = """
+example command lines:
+  %(prog)s --db synth.db add --tsv stuff.tsv
+  %(prog)s --db synth.db query --id 12345 --md
+  %(prog)s --db synth.db gen -n 100 --mode default 
+  %(prog)s --db synth.db gen --config synth_parms.yaml
+  %(prog)s --db synth.db config --format yaml
+  %(prog)s --db .db      image --id 1234
+"""
+
+syn_top = argparse.ArgumentParser(prog='synthnmr',
+	description='CLI for generating and archiving synthetic NMR data',
+	formatter_class=argparse.RawDescriptionHelpFormatter,
+    epilog=examples)
+syn_top.add_argument('--db', required=False, type=str,
+	metavar='<path>', help='path to database file, or set $SYNTHNMR')
+syn_top.add_argument('--verbose', action='store_true',
+	help='show behind the scenes stuff')
+syn_subs = syn_top.add_subparsers(dest='command')
+syn_subs.required = True
+
+# gen-level parser
+syn_gen = syn_subs.add_parser('gen', help='Generate new synthetic datasets')
+
+gen_mets = syn_gen.add_subparsers(dest='met')
+gen_mets.required = True
+
+random = gen_mets.add_parser('random', 
+	help='Generate random gaussian peak spectra')
+#random_group = random.add_mutually_exclusive_group(required=False)
+random.add_argument('--points', type=int, metavar='<int>', required=False, 
+	help='number of peaks', default=100)
+random.add_argument('--limits', nargs=2, type=float, required=False, 
+	default=[0,10], help='upper/lower limits for x/y axes')
+random.add_argument('--grid_density', type=int, metavar='<int>',
+	required=False, default=1000, help='discretization for both dimensions')
+random.add_argument('--max_variance', type=float, metavar='<float>',
+	required=False, default=1.0, help='max variance as % of interval size')
+random.add_argument('--min_variance', type=float, metavar='<float>',
+	required=False, default=1.0, help='min variance as % of interval size')
+"""
+gen_group = syn_insert.add_mutually_exclusive_group(required=True)
+gen_group.add_argument('random', type=str, metavar='<path>',
+	help='import multiple records via *.tsv')
+
+insert_group.add_argument('--yaml', type=str, metavar='<path>',
+	help='import single record via *.yaml')
+
+# query-level parser
+syn_query = syn_subs.add_parser('query', help='retrieve records from synth db')
+query_group = syn_query.add_mutually_exclusive_group(required=True)
+query_group.add_argument('--id', type=str, metavar='<str>',
+	help='query with specific identifier')
+query_group.add_argument('--lab', type=str, metavar='<str>',
+	help='query all records from specific lab')
+query_group.add_argument('--sql', type=str, metavar='<str>',
+	help='query using sql syntax')
+output_group = syn_query.add_mutually_exclusive_group(required=True)
+output_group.add_argument('--tsv', action='store_true',
+	help='output tab-separated values')
+output_group.add_argument('--md', action='store_true',
+	help='output markdown formatted table')
+"""
+
+syn = syn_top.parse_args()
+
+###############################################################################
+# Setup
+###############################################################################
+
+#class SynthNMRError(Exception):
+#	pass
+
+## Database ##
+
+DB = os.environ.get('SYNTHNMR') # reads environment variable by default
+if syn.db: DB = syn.db
+if DB == None:
+	print('no db specified')
+#	raise SynthNMRError('no database specified, use --db or $SYNTHNMR')
+#if not os.path.isfile(DB):
+#	raise SynthNMRError(f'no file at: {DB}')
+# connect to database, if that doesn't work, also raise error
+
+if syn.verbose: sys.stderr.write(f'using database at {DB}\n')
+
+## Commands ##
+print(syn)
+print(syn.command)
+print(syn.met)
+if syn.command == 'gen':
+	print('in gen')
+	if syn.met == 'random':
+		xyz, pi = sn.random_spectrum(points=syn.points,
+									 limits=syn.limits,
+									 grid_density=syn.grid_density,
+									 max_variance=syn.max_variance,
+									 min_variance=syn.min_variance)
+		print(xyz.shape)
+		print(pi.shape)
+"""
+		if syn.tsv:
+		print(f'reading {syn.tsv}')
+	elif syn.lab:
+		print(f'reading {syn.lab}')
+	elif syn.sql:
+		print(f'reading {syn.sql}')
+elif syn.command == 'query':
+	if syn.id:
+		print(f'querying {syn.id}')
+	elif syn.lab:
+		print(f'querying {syn.lab}')
+	elif syn.sql:
+		print(f'querying {syn.sql}')
+	
+	if syn.tsv:
+		print('formatting as tsv')
+	elif syn.md:
+		print('formatting as markdown')
+"""
