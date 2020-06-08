@@ -12,6 +12,16 @@ import io
 # Third-party libraries
 import numpy as np
 
+
+"""
+Initialize a db
+synthnmr init --name keith.db
+init does:
+	it reads the sythnmr sql
+	how to read the sql -- where will 
+	
+"""
+
 """
 Generator Functions
 """
@@ -79,6 +89,18 @@ def random_spectrum(points=100,
 	xyz = np.stack((x,y,z), axis=2)
 	points_info = np.concatenate((means, varis), axis=1)
 	return xyz, points_info
+
+def transformed_spectrum():
+	pass
+	
+"""
+Database Insertion Methods
+"""
+
+def insert():
+	# img_specs insert
+	# plot_specs insert
+	# data insert
 
 # maybe but the generator here?
 

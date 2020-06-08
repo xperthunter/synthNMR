@@ -111,7 +111,14 @@ if syn.command == 'gen':
 									 min_variance=syn.min_variance)
 		print(xyz.shape)
 		print(pi.shape)
+		"""
+		# insert into the correct db syn,db
+		# sn.insert(dbfile=syn.db, xyz, pi)
+		"""
 """
+if syn.command == 'init':
+	sn.init(name=syn.name)
+	
 		if syn.tsv:
 		print(f'reading {syn.tsv}')
 	elif syn.lab:
