@@ -98,6 +98,7 @@ Database Insertion Methods
 """
 
 def insert():
+	pass
 	# img_specs insert
 	# plot_specs insert
 	# data insert
