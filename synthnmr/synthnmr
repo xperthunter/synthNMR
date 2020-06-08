@@ -44,13 +44,13 @@ random = gen_mets.add_parser('random',
 random.add_argument('--points', type=int, metavar='<int>', required=False, 
 	help='number of peaks', default=100)
 random.add_argument('--limits', nargs=2, type=float, required=False, 
-	default=[0,10], help='upper/lower limits for x/y axes')
+	default=[0,10], metavar='', help='upper/lower limits for x/y axes')
 random.add_argument('--grid_density', type=int, metavar='<int>',
 	required=False, default=1000, help='discretization for both dimensions')
 random.add_argument('--max_variance', type=float, metavar='<float>',
-	required=False, default=1.0, help='max variance as % of interval size')
+	required=False, default=1.0, help='max variance percent of interval size')
 random.add_argument('--min_variance', type=float, metavar='<float>',
-	required=False, default=1.0, help='min variance as % of interval size')
+	required=False, default=1.0, help='min variance percent of interval size')
 """
 gen_group = syn_insert.add_mutually_exclusive_group(required=True)
 gen_group.add_argument('random', type=str, metavar='<path>',
