@@ -8,6 +8,7 @@ A module for making and storing synthetic nmr experiments.
 # Standard libraries
 import sqlite3
 import io
+import os
 
 # Third-party libraries
 import numpy as np
@@ -96,6 +97,18 @@ def transformed_spectrum():
 """
 Database Insertion Methods
 """
+
+def init(location=""):
+	assert(location)
+	module_path = os.path.abspath(os.path.dirname(__file__))
+	sql_path = os.path.join(module_path, '../sql/synth_schema.sql')
+	
+	conn = sqlite3.connect(location)
+	c = conn.cursor()
+	with open(sql_path) as fp:
+		c.executescript(fp.read())
+	
+	return
 
 def insert():
 	pass
