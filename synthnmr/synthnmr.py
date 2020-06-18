@@ -13,16 +13,6 @@ import os
 # Third-party libraries
 import numpy as np
 
-
-"""
-Initialize a db
-synthnmr init --name keith.db
-init does:
-	it reads the sythnmr sql
-	how to read the sql -- where will 
-	
-"""
-
 """
 Generator Functions
 """
@@ -91,7 +81,18 @@ def random_spectrum(points=100,
 	points_info = np.concatenate((means, varis), axis=1)
 	return xyz, points_info
 
+def spectrum_frompts(pts=[],input="",
+					 max_variance=1.0,
+					 min_variance=1.0,
+					 grid_density=1000):
+	for x, y in pts:
+		xyz[i,:,:] = np.exp(-(x-grid)**2 + (y-grid)**2)
+	pass
+
 def transformed_spectrum():
+	pass
+
+def protein_spectrum():
 	pass
 	
 """
@@ -99,6 +100,10 @@ Database Insertion Methods
 """
 
 def init(location=""):
+	"""
+	Initialize a synthnmr database file. 
+	
+	"""
 	assert(location)
 	module_path = os.path.abspath(os.path.dirname(__file__))
 	sql_path = os.path.join(module_path, '../sql/synth_schema.sql')
@@ -110,25 +115,53 @@ def init(location=""):
 	
 	return
 
-def insert():
+### All table insert methods ###
+
+def insert(dbfile=""):
 	pass
+	if dbfile !exists?:
+		sn.init(location=dbfile)
+	
+	make cursor
+	img_specs_insert(cursor, information to add)
 	# img_specs insert
 	# plot_specs insert
 	# data insert
 
-# maybe but the generator here?
+"""
+Query functions
++ read in query statements: either has sql or from yaml form?
+n=10 # number of results
+id=100..1000 # records with id between 100 and 1000
+mode=random,frompts # records made with modes random and frompts
+density=1000
+limits=[-5,5]
+protein=1GAF
+"""
 
-def gen(**kwargs):
-	mode = kwargs['mode']
-	n    = kwargs['n']
-	vari = kwargs['variance']
-	
-	
-# read in a yaml file or dictionary?
-# do that processing in synthnmr?
+"""
+Utility functions
++ generate tsv
++ generate yaml
++ making images -- visualization purposes
++ summary -- summarize a db -- how many records, number of unique experiments
+"""
 
-def add(**kwargs):
-	pass
-	
-def query(**kwargs):
-	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

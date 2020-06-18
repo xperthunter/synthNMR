@@ -51,6 +51,9 @@ random.add_argument('--max_variance', type=float, metavar='<float>',
 	required=False, default=1.0, help='max variance percent of interval size')
 random.add_argument('--min_variance', type=float, metavar='<float>',
 	required=False, default=1.0, help='min variance percent of interval size')
+random.add_argument('--set', type=int, metavar='<int>',
+	required=False, default=1, help='number of spectra to make')
+random.add_argument('--yaml')
 """
 gen_group = syn_insert.add_mutually_exclusive_group(required=True)
 gen_group.add_argument('random', type=str, metavar='<path>',
@@ -95,6 +98,10 @@ if DB == None:
 #	raise SynthNMRError(f'no file at: {DB}')
 # connect to database, if that doesn't work, also raise error
 
+"""
+synthnmr --db keith.db gen random --points 100 --set 10000
+"""
+
 if syn.verbose: sys.stderr.write(f'using database at {DB}\n')
 
 ## Commands ##
@@ -104,16 +111,20 @@ print(syn.met)
 if syn.command == 'gen':
 	print('in gen')
 	if syn.met == 'random':
-		xyz, pi = sn.random_spectrum(points=syn.points,
-									 limits=syn.limits,
-									 grid_density=syn.grid_density,
-									 max_variance=syn.max_variance,
-									 min_variance=syn.min_variance)
+		while(i < syn.set):
+			xyz, pi = sn.random_spectrum(points=syn.points,
+									 	limits=syn.limits,
+									 	grid_density=syn.grid_density,
+									 	max_variance=syn.max_variance,
+									 	min_variance=syn.min_variance)
 		print(xyz.shape)
 		print(pi.shape)
+		
 		"""
+		plotting next ?
 		# insert into the correct db syn,db
-		# sn.insert(dbfile=syn.db, xyz, pi)
+		# sn.insert(dbfile=syn.db, data=xyz, points_info=pi,
+					)
 		"""
 """
 if syn.command == 'init':
