@@ -175,9 +175,8 @@ def plot_specs_inserter(cursor, density, lower_limit, upper_limit, mode, varianc
 
 
 def user_info_inserter(cursor, first_name, last_name, email):
-	plot_specs_inserter(cursor, density, lower_limit, upper_limit, mode, variance)
 	"""
-	Inserts density, lower_limit, upper_limit, mode, variance into plot_specs table
+	Inserts first_name, last_name, email into user_info table
 
 	Parameters
 	----------
