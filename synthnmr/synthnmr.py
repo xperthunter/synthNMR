@@ -132,17 +132,17 @@ def img_specs_inserter(cursor, figsize, dpi):
 	+ dpi		`int`
 
 	"""
+	check_dpi = isinstance(dpi, str)
 
-	img_sql = ((f'INSERT INTO img_specs (figsize, dpi) VALUES (?, ?)'))
 	if (isinstance(figsize, str)) == True:
-		#z = re.match(pattern, figsize)
-			#if z == True:
-				#pass
-			#else:
-				#pass
-		pass
+		check = re.match(r"\d+inch|\d+in", figsize) ###
+		if check is not None and check_dpi == True:
+			img_sql = ((f'INSERT INTO img_specs (figsize, dpi) VALUES (?, ?)'))
+		else:
+			pass
 	else:
 		pass
+
 	img_list = [figsize, dpi]
 	cursor.execute(img_sql, img_list)
 
@@ -160,14 +160,14 @@ def plot_specs_inserter(cursor, density, lower_limit, upper_limit, mode, varianc
 	+ mode          `str`
 	+ variance      `float`
 	"""
-
-	plot_sql = ''.join((f'INSERT INTO plot_specs (density, lower_limit, upper_limit, mode, ',
-					'variance) VALUES (?, ?, ?, ?, ?)'))
 	assert(isinstance(density, int))
 	assert(isinstance(lower_limit, float))
 	assert(isinstance(upper_limit, float))
 	assert(isinstance(mode, str))
 	assert(isinstance(variance, float))
+
+	plot_sql = ''.join((f'INSERT INTO plot_specs (density, lower_limit, upper_limit, mode, ',
+					'variance) VALUES (?, ?, ?, ?, ?)'))
 
 	plot_list=[density, lower_limit, upper_limit, mode, variance]
 
@@ -184,10 +184,18 @@ def user_info_inserter(cursor, first_name, last_name, email):
 	+ last_name		`str`
 	+ email			`str`
 	"""
-	user_sql = ((f'INSERT INTO user_info (first_name, last_name, email) VALUES (?, ?, ?)'))
-	assert(isinstance(first_name, str))
-	assert(isinstance(last_name, str))
-	assert(isinstance(email, str))
+	check_fn = isinstance(first_name, str)
+	check_ln = isinstance(last_name, str)
+	check_em = isinstance(email, str)
+
+	if check_em == True:
+		email_check = re.search(r"\@\w+\.\w+", email)
+		if email_check is not None and check_ln == True and check_fn == True:
+			user_sql = ((f'INSERT INTO user_info (first_name, last_name, email) VALUES (?, ?, ?)'))
+		else:
+			pass
+	else:
+		pass
 	#z = re.match(pattern, email)
 	#if z == True:
 	#	pass
